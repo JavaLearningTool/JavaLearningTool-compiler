@@ -1,4 +1,7 @@
+'use strict';
+
 const { exec } = require('child_process');
+let fs = require("fs");
 
 function JavaTester() {
     return {
@@ -33,7 +36,13 @@ function JavaTester() {
                 exec('javac *.java', compileCallback);
             };
 
-            exec('echo public class Test {' + code + ' } > Test.java', makeFileCallback);
+            fs.writeFile('Test.java', "public class Test { " + code + "}", function(err) {
+                if (err) {
+                    console.log("Error creating file");
+                    return;
+                }
+                makeFileCallback();
+            });
         }
     };
 }
