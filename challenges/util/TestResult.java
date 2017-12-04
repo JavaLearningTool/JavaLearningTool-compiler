@@ -11,7 +11,7 @@ public class TestResult<T> {
 	}
 
 	public String toJsonString() {
-		return String.format("{expected: %s, actual: %s, passed: %s}",
+		return String.format("{\"expected\": \"%s\", \"actual\": \"%s\", \"passed\": \"%s\"}",
 			expected.toString(), actual.toString(), passed ? "true" : "false");
 	}
 }

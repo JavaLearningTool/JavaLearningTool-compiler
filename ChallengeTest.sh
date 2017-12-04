@@ -5,7 +5,7 @@ if [ $? -ne 0 ]; then
 	echo "Problem Copying: $copyOut"
 	cd ..
 	rm -r './sandbox';
-	exit 0
+	exit 1
 fi
 
 cd "./sandbox"
@@ -15,14 +15,14 @@ if [ $? -ne 0 ]; then
 	echo "$compOut"
 	cd ..
 	rm -r './sandbox';
-	exit 0
+	exit 1
 fi
 runOut=$(java -cp .:../challenges/util "$FileName" 2>&1)
 if [ $? -ne 0 ]; then
 	echo "$runOut"
 	cd ..
 	rm -r './sandbox';
-	exit 0
+	exit 1
 fi
 
 cd ..

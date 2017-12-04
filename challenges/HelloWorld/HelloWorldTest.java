@@ -11,15 +11,13 @@ public class HelloWorldTest {
 		// Run test case
 		String[] testArgs = {};
 		tester.runTest(testArgs);
+		tester.runTest(testArgs);
 
 		// End the tests. Must be done to set stdout back sysout
 		tester.endTests();
 
 		// Print results
-		List<TestResult> results = tester.getResults();
-		for (TestResult result: results) {
-			System.out.println(result.toJsonString());
-		}
+		System.out.println(tester.toJsonString());
 	}
 
 	public static void approved(String[] args) {

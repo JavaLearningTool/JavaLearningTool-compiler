@@ -63,6 +63,19 @@ public class CommandLineStandardOutTester {
 		return results;
 	}
 
+	public String toJsonString() {
+		String ret = "[";
+		for (int i = 0; i < results.size(); i++) {
+			ret += results.get(i).toJsonString();
+			if (i != results.size() - 1) {
+				ret += ",";
+			}
+		}
+
+		ret += "]";
+		return ret;
+	}
+
 	public void endTests() {
 		// Set stdout back to sysout
 		System.setOut(old);

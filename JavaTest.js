@@ -5,13 +5,14 @@ let fs = require("fs");
 
 const errorMessage = "Testing failed. Try again later.";
 
+function newLineEscape(str) {
+    str = str.trim();
+    return str.replace(/\n/g, "\\\\n");
+}
+
 function newLineToBreak(str) {
-    return str.replace(/&/g, "&amp;")
-         .replace(/</g, "&lt;")
-         .replace(/>/g, "&gt;")
-         .replace(/"/g, "&quot;")
-         .replace(/'/g, "&#039;")
-         .replace(/\n/g, "<br>")
+    str = str.trim();
+    return str.replace(/\n/g, "<br>");
 }
 
 function JavaTester() {
@@ -20,13 +21,15 @@ function JavaTester() {
             let testCallback = (err, stdout, stderr) => {
                 if (err) {
                     console.log(`exec error: ${err}`);
-                    callback(errorMessage);
+                    console.log(`STDOUT: ${stdout}`);
+                    console.log(`STDERR: ${stderr}`);
+                    callback(JSON.stringify({error: stdout}));
                     return;
                 }
 
                 console.log(`bash STDOUT: ${stdout}`);
                 console.log(`bash STDOUT: ${stdout}`);
-                callback(newLineToBreak(stdout));
+                callback(newLineEscape(stdout));
             };
 
             let makeFileCallback = () => {
