@@ -17,7 +17,7 @@ function newLineToBreak(str) {
 
 function JavaTester() {
     return {
-        runProcess: function(code, callback) {
+        runProcess: function(code, challenge, callback) {
             let testCallback = (err, stdout, stderr) => {
                 if (err) {
                     console.log(`exec error: ${err}`);
@@ -33,13 +33,13 @@ function JavaTester() {
             };
 
             let makeFileCallback = () => {
-                exec('bash ChallengeTest.sh HelloWorld', testCallback);
+                exec('bash ChallengeTest.sh ' + challenge, testCallback);
             };
 
             // Create sandbox folder where everything is run
             if (fs.existsSync('sandbox')) {
                 console.log("Sandbox folder already exists! Oops.");
-                callback(errorMessage);
+                callback({error: errorMessage});
                 return;
             } else {
                 fs.mkdirSync('sandbox');
@@ -49,7 +49,7 @@ function JavaTester() {
             fs.writeFile('sandbox/Test.java', code, function(err) {
                 if (err) {
                     console.log("Error creating file");
-                    callback(errorMessage);
+                    callback({error: errorMessage});
                     return;
                 }
                 // This will run ChallengeTest.sh

@@ -17,7 +17,7 @@ if [ $? -ne 0 ]; then
 	rm -r './sandbox';
 	exit 1
 fi
-runOut=$(java -cp .:../challenges/util "$FileName" 2>&1)
+runOut=$(java -cp .:../challenges/util -Djava.security.manager -Djava.security.policy==../java.policy "$FileName" 2>&1)
 if [ $? -ne 0 ]; then
 	echo "$runOut"
 	cd ..
