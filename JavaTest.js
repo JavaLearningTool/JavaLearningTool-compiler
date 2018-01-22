@@ -5,6 +5,11 @@ let fs = require("fs");
 
 const errorMessage = "Testing failed. Try again later.";
 
+function escapeNewLine(str) {
+  str = str.trim();
+  return str.replace(/\n/g, "\\n");
+}
+
 function newLineToBreak(str) {
     str = str.trim();
     return str.replace(/\n/g, "<br>");
@@ -24,7 +29,7 @@ function JavaTester() {
 
                 console.log(`bash STDOUT: ${stdout}`);
                 console.log(`bash STDOUT: ${stdout}`);
-                callback(stdout);
+                callback(escapeNewLine(stdout));
             };
 
             let makeFileCallback = () => {
