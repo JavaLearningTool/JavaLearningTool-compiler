@@ -59,3 +59,6 @@ typings/
 
 # java
 .class
+
+# challenges should be ignored because they have their own repository
+challenges
