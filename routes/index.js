@@ -5,13 +5,14 @@ const express = require('express');
 const router = express.Router();
 const JavaTest = require('../JavaTest.js');
 const tester = JavaTest();
+const logger = require('../logger.js');
 
 router.post('/', function(req, res, next) {
-  console.log("SRC Code: " + req.body.src);
-  console.log("Challenge: " + req.body.challenge);
+  logger.debug("SRC Code: " + req.body.src);
+  logger.debug("Challenge: " + req.body.challenge);
   
   tester.addProcess(req.body.src, req.body.challenge, function (answer) {
-    console.log(answer);
+    logger.debug(answer);
     res.send(answer);
   });
 });

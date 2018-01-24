@@ -1,7 +1,9 @@
 'use strict';
 
 const { exec } = require('child_process');
-let fs = require("fs");
+const fs = require("fs");
+
+const logger = require('./logger');
 
 const errorMessage = "Testing failed. Try again later.";
 
@@ -34,15 +36,15 @@ function runProcess() {
 
     let testCallback = (err, stdout, stderr) => {
         if (err) {
-            console.log(`exec error: ${err}`);
-            console.log(`STDOUT: ${stdout}`);
-            console.log(`STDERR: ${stderr}`);
+            logger.error(`exec error: ${err}`);
+            logger.error(`STDOUT: ${stdout}`);
+            logger.error(`STDERR: ${stderr}`);
             callback(JSON.stringify({error: stdout}));
             return;
         }
 
-        console.log(`bash STDOUT: ${stdout}`);
-        console.log(`bash STDOUT: ${stdout}`);
+        logger.info(`bash STDOUT: ${stdout}`);
+        logger.info(`bash STDOUT: ${stdout}`);
         callback(escapeNewLine(stdout));
     };
 
@@ -52,7 +54,7 @@ function runProcess() {
 
     // Create sandbox folder where everything is run
     if (fs.existsSync('sandbox')) {
-        console.log("Sandbox folder already exists! Oops.");
+        logger.error("Sandbox folder already exists! Oops.");
         callback({error: errorMessage});
         return;
     } else {
@@ -62,7 +64,7 @@ function runProcess() {
     // Make the java folder to execute in
     fs.writeFile('sandbox/Test.java', code, function(err) {
         if (err) {
-            console.log("Error creating file");
+            logger.error("Error creating file");
             callback({error: errorMessage});
             return;
         }
@@ -78,7 +80,7 @@ function JavaTester() {
     return {
         addProcess(code, challenge, callback) {
             queue.push({ code, challenge, callback });
-            console.log("Queue: ", queue.length);
+            logger.debug("Queue: ", queue.length);
             if (!processing) {
                 runProcess();
             }
