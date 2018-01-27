@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
-const logger = require('morgan');
+const logger = require("./logger");
+const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -8,7 +9,7 @@ const index = require('./routes/index');
 
 const app = express();
 
-app.use(logger('dev'));
+app.use(morgan("dev", { stream: logger.stream }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
