@@ -52,19 +52,18 @@ function runProcess() {
         exec('bash ChallengeTest.sh ' + challenge, testCallback);
     };
 
-    // Create sandbox folder where everything is run
+    // Delete sandbox if it still exists
     if (fs.existsSync('sandbox')) {
-        logger.error("Sandbox folder already exists! Oops.");
-        callback({error: errorMessage});
-        return;
-    } else {
-        fs.mkdirSync('sandbox');
+        fs.unlinkSync('sandbox');
     }
+
+    // Create sandbox folder where everything is run
+    fs.mkdirSync('sandbox');
 
     // Make the java folder to execute in
     fs.writeFile('sandbox/Test.java', code, function(err) {
         if (err) {
-            logger.error("Error creating file");
+            logger.error("Error creating Test.java.");
             callback({error: errorMessage});
             return;
         }
