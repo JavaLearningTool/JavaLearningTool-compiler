@@ -82,6 +82,9 @@ function JavaTester() {
         addProcess(code, challenge, callback) {
             queue.push({ code, challenge, callback });
             logger.debug("Queue: ", queue.length);
+            if (queue.length > 5) {
+                logger.warn("Compile queue is " + queue.length + " tests long.");
+            }
             if (!processing) {
                 runProcess();
             }
