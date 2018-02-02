@@ -7,8 +7,11 @@ const logger = require('./logger');
 
 const errorMessage = "Testing failed. Try again later.";
 
-function escapeNewLine(str) {
+function escapeForJson(str) {
   str = str.trim();
+  str = str.replace(/\t/g, "\\t");
+  str = str.replace(/\f/g, "\\f");
+  str = str.replace(/\r/g, "\\r");
   return str.replace(/\n/g, "\\n");
 }
 
@@ -44,8 +47,7 @@ function runProcess() {
         }
 
         logger.info(`bash STDOUT: ${stdout}`);
-        logger.info(`bash STDOUT: ${stdout}`);
-        callback(escapeNewLine(stdout));
+        callback(escapeForJson(stdout));
     };
 
     let makeFileCallback = () => {
