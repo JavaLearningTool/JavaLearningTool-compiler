@@ -8,11 +8,19 @@ const logger = require('./logger');
 const errorMessage = "Testing failed. Try again later.";
 
 function escapeForJson(str) {
-  str = str.trim();
-  str = str.replace(/\t/g, "\\t");
-  str = str.replace(/\f/g, "\\f");
-  str = str.replace(/\r/g, "\\r");
-  return str.replace(/\n/g, "\\n");
+    str = str.trim();
+    str = str.replace(/\t/g, "\\t");
+    str = str.replace(/\f/g, "\\f");
+    str = str.replace(/\r/g, "\\r");
+    return str.replace(/\n/g, "\\n");
+}
+
+function escapeErrorMessage(msg) {
+    msg = msg.trim();
+    //msg = msg.replace(/\t/g, "\\t");
+    msg = msg.replace(/\f/g, "");
+    msg = msg.replace(/\r/g, "");
+    return msg//.replace(/\n/g, "\\n");
 }
 
 function newLineToBreak(str) {
@@ -43,7 +51,7 @@ function runProcess() {
             logger.error(`exec error: ${err}`);
             logger.error(`STDOUT: ${stdout}`);
             logger.error(`STDERR: ${stderr}`);
-            callback(JSON.stringify({error: stdout}));
+            callback(JSON.stringify({error: escapeErrorMessage(stdout)}));
             return;
         }
 
@@ -71,7 +79,7 @@ function runProcess() {
             return;
         }
         // This will run ChallengeTest.sh
-        makeFileCallback();
+        makeFileCallback(); 
     });
 }
 
