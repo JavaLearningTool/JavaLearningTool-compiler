@@ -27,6 +27,7 @@ function runProcess() {
 
     let code = temp.code;
     let challenge = temp.challenge;
+    let className = temp.className;
     let finalCallback = temp.callback;
 
     let callback = function(obj) {
@@ -63,7 +64,7 @@ function runProcess() {
     fs.mkdirSync('sandbox');
 
     // Make the java folder to execute in
-    fs.writeFile('sandbox/Test.java', code, function(err) {
+    fs.writeFile('sandbox/' + className + '.java', code, function(err) {
         if (err) {
             logger.error("Error creating Test.java.");
             callback({error: errorMessage});
@@ -79,8 +80,8 @@ let processing = false;
 
 function JavaTester() {
     return {
-        addProcess(code, challenge, callback) {
-            queue.push({ code, challenge, callback });
+        addProcess(code, challenge, className, callback) {
+            queue.push({ code, challenge, className, callback });
             logger.debug("Queue: ", queue.length);
             if (queue.length > 5) {
                 logger.warn("Compile queue is " + queue.length + " tests long.");
