@@ -1,4 +1,5 @@
 grant {
     permission java.lang.RuntimePermission "setIO";
     permission java.lang.RuntimePermission "stopThread";
+    permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
 };
