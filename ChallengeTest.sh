@@ -10,14 +10,14 @@ fi
 
 cd "./sandbox"
 
-compOut=$(javac -cp .:../challenges/util *.java 2>&1)
+compOut=$(javac -cp .:../challenges/util:../challenges/shared *.java 2>&1)
 if [ $? -ne 0 ]; then
 	echo "$compOut"
 	cd ..
 	rm -r './sandbox';
 	exit 1
 fi
-runOut=$(java -cp .:../challenges/util -Djava.security.manager -Djava.security.policy==../java.policy "$FileName" 2>&1)
+runOut=$(java -cp .:../challenges/util:../challenges/shared -Djava.security.manager -Djava.security.policy==../java.policy "$FileName" 2>&1)
 if [ $? -ne 0 ]; then
 	echo "$runOut"
 	cd ..
