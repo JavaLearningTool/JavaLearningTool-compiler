@@ -27,6 +27,7 @@ RUN npm install
 COPY . /usr/src/app
 
 RUN git clone ${CHALLENGE_REPO}
+RUN mv JavaLearningTool-challenges challenges
 
 EXPOSE 3000
 CMD ["npm", "start"]
