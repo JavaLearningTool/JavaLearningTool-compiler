@@ -4,6 +4,8 @@ FROM openjdk:9
 # build from latest version of node
 FROM node:latest
 
+ARG CHALLENGE_REPO
+
 # setup java home
 ENV JAVA_HOME=/usr/lib/java/bin
 # add java to path
@@ -23,6 +25,8 @@ RUN npm install
 
 # add the rest of my code
 COPY . /usr/src/app
+
+RUN git clone ${CHALLENGE_REPO}
 
 EXPOSE 3000
 CMD ["npm", "start"]
