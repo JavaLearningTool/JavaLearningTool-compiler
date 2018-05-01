@@ -1,9 +1,10 @@
 # build from openjdk
-FROM openjdk:9
+FROM openjdk:10
 
 # build from latest version of node
 FROM node:latest
 
+# Declare that we expect CHALLENGE_REPO as an ARG
 ARG CHALLENGE_REPO
 
 # setup java home
@@ -23,11 +24,15 @@ WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 RUN npm install
 
-# add the rest of my code
-COPY . /usr/src/app
-
+# Clone challenges
 RUN git clone ${CHALLENGE_REPO}
 RUN mv JavaLearningTool-challenges challenges
+
+# Add challenge repo to environment
+ENV CHALLENGE_REPO=${CHALLENGE_REPO}
+
+# add the rest of my code
+COPY . /usr/src/app
 
 EXPOSE 3000
 CMD ["npm", "start"]
