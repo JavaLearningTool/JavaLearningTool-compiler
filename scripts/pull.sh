@@ -1,0 +1,2 @@
+cd ../challenges
+git pull

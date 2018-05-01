@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
-const { exec } = require('child_process');
+const { exec } = require("child_process");
 const fs = require("fs");
 
-const logger = require('./logger');
+const logger = require("./logger");
 
 const errorMessage = "Testing failed. Try again later.";
 
@@ -20,7 +20,7 @@ function escapeErrorMessage(msg) {
     //msg = msg.replace(/\t/g, "\\t");
     msg = msg.replace(/\f/g, "");
     msg = msg.replace(/\r/g, "");
-    return msg//.replace(/\n/g, "\\n");
+    return msg; //.replace(/\n/g, "\\n");
 }
 
 function newLineToBreak(str) {
@@ -29,7 +29,6 @@ function newLineToBreak(str) {
 }
 
 function runProcess() {
-
     processing = true;
     let temp = queue.splice(0, 1)[0];
 
@@ -51,7 +50,7 @@ function runProcess() {
             logger.error(`exec error: ${err}`);
             logger.error(`STDOUT: ${stdout}`);
             logger.error(`STDERR: ${stderr}`);
-            callback(JSON.stringify({error: escapeErrorMessage(stdout)}));
+            callback(JSON.stringify({ error: escapeErrorMessage(stdout) }));
             return;
         }
 
@@ -60,26 +59,26 @@ function runProcess() {
     };
 
     let makeFileCallback = () => {
-        exec('bash ChallengeTest.sh ' + challenge, testCallback);
+        exec("bash ./scripts/ChallengeTest.sh " + challenge, testCallback);
     };
 
     // Delete sandbox if it still exists
-    if (fs.existsSync('sandbox')) {
-        fs.unlinkSync('sandbox');
+    if (fs.existsSync("sandbox")) {
+        fs.unlinkSync("sandbox");
     }
 
     // Create sandbox folder where everything is run
-    fs.mkdirSync('sandbox');
+    fs.mkdirSync("sandbox");
 
     // Make the java folder to execute in
-    fs.writeFile('sandbox/' + className + '.java', code, function(err) {
+    fs.writeFile("sandbox/" + className + ".java", code, function(err) {
         if (err) {
             logger.error("Error creating Test.java.");
-            callback({error: errorMessage});
+            callback({ error: errorMessage });
             return;
         }
         // This will run ChallengeTest.sh
-        makeFileCallback(); 
+        makeFileCallback();
     });
 }
 
