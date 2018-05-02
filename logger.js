@@ -3,7 +3,7 @@ winston.emitErrs = true;
 
 let transports = [];
 
-if (process.env.LOGS === 'DEV') {
+if (process.env.LOGS === "DEV") {
     transports.push(
         new winston.transports.Console({
             handleExceptions: true,
@@ -11,19 +11,21 @@ if (process.env.LOGS === 'DEV') {
             colorize: true
         })
     );
-} else if (process.env.LOGS === 'ALL_FILES') {
+} else if (process.env.LOGS === "ALL_FILES") {
     transports.push(
-    new winston.transports.File({
-        filename: "./logs/all.log",
-        handleExceptions: true,
-        json: true,
-        maxsize: 5242880, //5MB
-        maxFiles: 3,
-        colorize: false,
-        timestamp: function() {
-        return new Date().toISOString();
-        }
-    })
+        new winston.transports.File({
+            filename: "./logs/all.log",
+            level: "debug",
+            handleExceptions: true,
+            json: true,
+            maxsize: 5242880,
+            maxFiles: 3,
+            colorize: false,
+            timestamp: function() {
+                //5MB
+                return new Date().toISOString();
+            }
+        })
     );
 } else {
     transports.push(
@@ -41,7 +43,7 @@ if (process.env.LOGS === 'DEV') {
             }
         })
     );
-    
+
     transports.push(
         new winston.transports.File({
             name: "warning-file",

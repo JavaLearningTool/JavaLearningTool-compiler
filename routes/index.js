@@ -1,9 +1,6 @@
-import { execSync } from "child_process";
-
-("use strict");
-
+"use strict";
 const express = require("express");
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 
 const router = express.Router();
 const JavaTest = require("../JavaTest.js");
@@ -24,7 +21,12 @@ router.post("/", function(req, res, next) {
 router.post("/pull", function(req, res, next) {
     logger.debug("Pulling repo");
 
-    execSync("bash ./scripts/pull.sh");
+    try {
+        execSync("bash ./scripts/pull.sh");
+        res.json({ error: false });
+    } catch (err) {
+        res.json({ error: err });
+    }
 });
 
 module.exports = router;

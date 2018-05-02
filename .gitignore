@@ -62,3 +62,5 @@ typings/
 
 # challenges should be ignored because they have their own repository
 challenges
+
+.directory

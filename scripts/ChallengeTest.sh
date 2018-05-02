@@ -1,9 +1,10 @@
+#!/bin/bash
+
 Challenge=$1
 FileName=$1"Test"
-copyOut=$(cp "../challenges/$Challenge/$FileName.java" ./sandbox 2>&1)
+copyOut=$(cp "./challenges/$Challenge/$FileName.java" ./sandbox 2>&1)
 if [ $? -ne 0 ]; then
 	echo "Problem Copying: $copyOut"
-	cd ..
 	rm -r './sandbox';
 	exit 1
 fi

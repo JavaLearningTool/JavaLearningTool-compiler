@@ -1,2 +1,4 @@
-cd ../challenges
+#!/bin/bash
+
+cd challenges
 git pull
