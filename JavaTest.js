@@ -64,7 +64,7 @@ function runProcess() {
 
     // Delete sandbox if it still exists
     if (fs.existsSync("sandbox")) {
-        fs.unlinkSync("sandbox");
+        fs.rmdirSync("sandbox");
     }
 
     // Create sandbox folder where everything is run
