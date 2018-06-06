@@ -47,9 +47,9 @@ function runProcess() {
 
     let testCallback = (err, stdout, stderr) => {
         if (err) {
-            logger.error(`exec error: ${err}`);
-            logger.error(`STDOUT: ${stdout}`);
-            logger.error(`STDERR: ${stderr}`);
+            logger.info(`exec error: ${err}`);
+            logger.info(`STDOUT: ${stdout}`);
+            logger.info(`STDERR: ${stderr}`);
             callback(JSON.stringify({ error: escapeErrorMessage(stdout) }));
             return;
         }
