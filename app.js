@@ -18,20 +18,23 @@ app.use("/", index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error("Not Found");
+    var err = new Error("404 Not Found");
     err.status = 404;
+
     next(err);
 });
 
 // error handler
 app.use(function(err, req, res, next) {
-    // set locals, only providing error in development
-    let error = err.message;
-    error = req.app.get("env") === "development" ? err : {};
+    // Add URL to error
+    let fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+    err.url = fullUrl;
+
+    logger.error("An error occurred: " + err + " " + JSON.stringify(err));
 
     // json error page
     res.status(err.status || 500);
-    res.json({ error });
+    res.json({ error: err });
 });
 
 module.exports = app;
