@@ -30,11 +30,11 @@ function newLineToBreak(str) {
 
 function runProcess() {
     processing = true;
+    // Get the next challenge to run from the queue
     let temp = queue.splice(0, 1)[0];
 
-    let code = temp.code;
+    let classes = temp.classes;
     let challenge = temp.challenge;
-    let className = temp.className;
     let finalCallback = temp.callback;
 
     let callback = function(obj) {
@@ -58,10 +58,6 @@ function runProcess() {
         callback(escapeForJson(stdout));
     };
 
-    let makeFileCallback = () => {
-        exec("bash ./scripts/ChallengeTest.sh " + challenge, testCallback);
-    };
-
     // Delete sandbox if it still exists
     if (fs.existsSync("sandbox")) {
         fs.rmdirSync("sandbox");
@@ -70,16 +66,19 @@ function runProcess() {
     // Create sandbox folder where everything is run
     fs.mkdirSync("sandbox");
 
-    // Make the java folder to execute in
-    fs.writeFile("sandbox/" + className + ".java", code, function(err) {
-        if (err) {
-            logger.error("Error creating Test.java.");
-            callback({ error: errorMessage });
-            return;
-        }
-        // This will run ChallengeTest.sh
-        makeFileCallback();
-    });
+    // Make java files
+    try {
+        classes.forEach(cls => {
+            fs.writeFileSync("sandbox/" + cls.name + ".java", cls.code);
+        });
+    } catch (err) {
+        logger.error("Error creating Java files.", err);
+        callback({ error: errorMessage });
+        return;
+    }
+
+    // Run the shell script that handles creating and running the challenge tester
+    exec("bash ./scripts/ChallengeTest.sh " + challenge, testCallback);
 }
 
 let queue = [];
@@ -87,8 +86,8 @@ let processing = false;
 
 function JavaTester() {
     return {
-        addProcess(code, challenge, className, callback) {
-            queue.push({ code, challenge, className, callback });
+        addProcess(classes, challenge, callback) {
+            queue.push({ classes, challenge, callback });
             logger.debug("Queue: ", queue.length);
             if (queue.length > 2) {
                 logger.warn("Compile queue is " + queue.length + " tests long.");
