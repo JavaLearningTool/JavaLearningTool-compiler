@@ -2,14 +2,25 @@
 
 Challenge=$1
 FileName=$1"Test"
-copyOut=$(cp "./challenges/$Challenge/$FileName.java" ./sandbox 2>&1)
+
+cd "./sandbox"
+
+# Compile their classes first to make sure they have all of the necessary classes
+compOut=$(javac -cp .:../challenges/util:../challenges/shared *.java 2>&1)
+if [ $? -ne 0 ]; then
+	echo "$compOut"
+	cd ..
+	rm -r './sandbox';
+	exit 1
+fi
+
+# Copy over the tester
+copyOut=$(cp -a "../challenges/$Challenge/." ./ 2>&1)
 if [ $? -ne 0 ]; then
 	echo "Problem Copying: $copyOut"
 	rm -r './sandbox';
 	exit 1
 fi
-
-cd "./sandbox"
 
 compOut=$(javac -cp .:../challenges/util:../challenges/shared *.java 2>&1)
 if [ $? -ne 0 ]; then
