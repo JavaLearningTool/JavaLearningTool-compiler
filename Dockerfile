@@ -1,5 +1,5 @@
 # build from openjdk
-FROM openjdk:10
+FROM openjdk:11
 
 # build from latest version of node
 FROM node:latest
