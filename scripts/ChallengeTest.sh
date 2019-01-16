@@ -1,20 +1,12 @@
 #!/bin/bash
 
 Challenge=$1
-FileName=$1"Test"
+TesterFileName=$1"Test"
 
 cd "./sandbox"
 
-# Copy over the tester
-copyOut=$(cp -a "../challenges/$Challenge/." ./ 2>&1)
-if [ $? -ne 0 ]; then
-	echo "Problem Copying: $copyOut"
-	rm -r './sandbox';
-	exit 1
-fi
-
 # Compile everything
-compOut=$(javac -cp .:../challenges/tester_lib/build/libs/tester_lib.jar:../challenges/shared *.java 2>&1)
+compOut=$(javac -cp .:../challenges/$Challenge:../challenges/tester_lib/build/libs/tester_lib-all.jar:../challenges/shared *.java ../challenges/$Challenge/*.java 2>&1)
 if [ $? -ne 0 ]; then
 	echo "$compOut"
 	cd ..
@@ -23,7 +15,7 @@ if [ $? -ne 0 ]; then
 fi
 
 # run testers
-runOut=$(java -cp .:../challenges/tester_lib/build/libs/tester_lib.jar:../challenges/shared -Djava.security.manager -Djava.security.policy==../java.policy "$FileName" 2>&1)
+runOut=$(java -cp .:../challenges/$Challenge:../challenges/tester_lib/build/libs/tester_lib-all.jar:../challenges/shared -Djava.security.manager "$TesterFileName" 2>&1)
 if [ $? -ne 0 ]; then
 	echo "$runOut"
 	cd ..
